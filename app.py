@@ -29,3 +29,9 @@ if st.button("Predict Risk"):
     sample = np.array([[time_map[time], location_map[location], person_map[person], cctv_map[cctv], delivery_map[delivery]]])
     prob = model.predict_proba(sample)[0][1]
     st.write(f"Risk Score: {round(prob,2)}")
+    if prob < 0.3:
+    st.success("Low Risk 🟢")
+elif prob < 0.7:
+    st.warning("Medium Risk 🟡")
+else:
+    st.error("High Risk 🔴")
