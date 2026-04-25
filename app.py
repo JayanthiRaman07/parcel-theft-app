@@ -29,8 +29,19 @@ person_map = {"No":0, "Yes":1}
 cctv_map = {"No":0, "Yes":1}
 delivery_map = {"Doorstep":0, "Handed":1}
 
-# Prediction
-if st.button("Predict Risk"):
+# Button
+if st.button("🚀 Predict Risk"):
+    
+    # Input summary
+    st.subheader("Input Summary")
+    st.write({
+        "Time": time,
+        "Location": location,
+        "Person at Home": person,
+        "CCTV": cctv,
+        "Delivery Type": delivery
+    })
+
     sample = np.array([[time_map[time], location_map[location], person_map[person], cctv_map[cctv], delivery_map[delivery]]])
     
     prob = model.predict_proba(sample)[0][1]
@@ -38,6 +49,7 @@ if st.button("Predict Risk"):
     # Result
     st.subheader("Prediction Result")
     st.write(f"Risk Score: {round(prob,2)}")
+    st.write(f"Risk Percentage: {round(prob*100,1)}%")
 
     if prob < 0.3:
         st.success("Low Risk 🟢")
@@ -47,6 +59,7 @@ if st.button("Predict Risk"):
         st.error("High Risk 🔴")
 
     st.progress(float(prob))
+    st.success("Prediction Completed ✅")
 
     # Explanation
     st.subheader("Why this risk?")
@@ -64,11 +77,15 @@ if st.button("Predict Risk"):
     st.subheader("Recommendation")
 
     if prob > 0.7:
-        st.write("• Use CCTV or secure locker")
+        st.error("High Risk! Take precautions ⚠️")
         st.write("• Ensure someone is home")
-        st.write("• Prefer handed delivery")
+        st.write("• Use CCTV")
+        st.write("• Avoid doorstep delivery")
+    elif prob > 0.3:
+        st.warning("Moderate Risk ⚠️")
+        st.write("• Be cautious during delivery")
     else:
-        st.write("• Delivery conditions are relatively safe")
+        st.success("Safe delivery conditions ✅")
 
     # Graph
     st.subheader("Risk Insight")
