@@ -35,3 +35,4 @@ elif prob < 0.7:
     st.warning("Medium Risk 🟡")
 else:
     st.error("High Risk 🔴")
+st.write("🔒 Recommendation: Ensure safe delivery practices.")
